@@ -115,8 +115,9 @@ function generateRandomSimulation(filepath, nbr_cavities, minradius, maxradius)
 end
 
 function generateSimulations(number_of_sim, mincavity, maxcavity, minradius, maxradius) % Generate and save random models under 'Sim{i}.mat where i the indice of the generated.
-for i = 1:1:number_of_sim
-    generateRandomSimulation(sprintf('Sim%d.mat',i),randi([mincavity, maxcavity]), minradius, maxradius);
+    for i = 1:1:number_of_sim
+        generateRandomSimulation(sprintf('Sim%d.mat',i),randi([mincavity, maxcavity]), minradius, maxradius);
+    end
 end
 
 % %% Comparison Radiation Condition
