@@ -37,7 +37,7 @@ function generateRandomSimulation(filepath, nbr_cavities, minradius, maxradius)
 
   count = 0; 
   while count < nbr_cavities
-      radius = randi([minradius,maxrad])/1000;
+      radius = randi([minradius,maxradius])/1000;
       x = (2-2*radius)*rand(1,1)-1+radius;
       y = (2-2*radius)*rand(1,1)-1+radius;
       z = (2-2*radius)*rand(1,1)-1+radius;
