@@ -99,6 +99,4 @@ function generateSimulations(filepath,number_of_sim, mincavity, maxcavity, minra
     for i = 1:1:number_of_sim
         generateRandomSimulation(sprintf(filepath,i),randi([mincavity, maxcavity]), minradius, maxradius);
     end
-end
-
-generateSimulations('Sim%d.mat',1,5,10,200,500)
+end 
