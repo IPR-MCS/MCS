@@ -9,6 +9,11 @@ function intersect = spheresIntersect(center1, radius1, center2, radius2)
     intersect = distance < (radius1 + radius2);
 end
 
+function geometry = importGeometry(filepath)
+    % Import structure geometry from a STL or a STEP file
+    geometry = importGeometry(filepath);
+end
+
 function geometry = generateGeometry(nbr_cavities, minradius, maxradius)
   %% Generate a randomised porous cubic geometry
   geometry.structure=multicuboid(2,2,2,'Zoffset',-1);
