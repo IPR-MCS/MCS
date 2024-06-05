@@ -57,11 +57,6 @@ function generateRandomSimulation(filepath, nbr_cavities, minradius, maxradius)
   
   end
 
-  % figure;
-  % pdegplot(cube, "FaceLabels","off",'FaceAlpha', 0.5);
-  % axis equal;
-  %% PDE
-
   thermalModel = createpde('thermal','transient');
   thermalModel.Geometry=cube;
   generateMesh(thermalModel,'Hmax',0.2,"GeometricOrder","quadratic");
@@ -74,15 +69,12 @@ function generateRandomSimulation(filepath, nbr_cavities, minradius, maxradius)
   thermalBC(thermalModel,"Face",7:count+6,"Temperature",T_out, "Vectorized","on");
   thermalBC(thermalModel,"Face",1:6,"Emissivity",@(region,state) eps,"AmbientTemperature",T_out, "Vectorized","on");
 
-
-
-  %%
+  %% Solver
   thermalResults = solve(thermalModel,tlist);
   Tcenter = interpolateTemperature(thermalResults,[0;0;0],1:numel(tlist));
 
 
   %% Time to get to Curie Temperature
-
   TCurie=858;
   [~,indice] = min(abs(Tcenter-TCurie));
   time_to_Curie = tlist(indice)/day;
