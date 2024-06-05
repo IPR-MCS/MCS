@@ -9,14 +9,13 @@ function intersect = spheresIntersect(center1, radius1, center2, radius2)
     intersect = distance < (radius1 + radius2);
 end
 
-function [geometry] = generateGeometry(nbr_cavities, minradius, maxradius)
+function geometry = generateGeometry(nbr_cavities, minradius, maxradius)
   %% Generate a randomised porous cubic geometry
   geometry.structure=multicuboid(2,2,2,'Zoffset',-1);
   
   % To avoid cavity located in center of geometry
   geometry.centers = [0,0,0];
   geometry.radii = [0.2];
-  
   geometry.porous_volume = 0; 
   geometry.porosity_fraction = 0;
   geometry.nbr_cavities = nbr_cavities;
@@ -50,16 +49,17 @@ function [geometry] = generateGeometry(nbr_cavities, minradius, maxradius)
   end
 end
 
-function Simulate(filepath, geometry)
-  rho=2000;
-  cp=1000;
-  eps=1;              
-  T_out=300;
-  T_0=2000;
-  dt=200;
-  day=3600*24;
-  tmax=6*day;
-  tlist = [0:dt:tmax];
+function simulation = Simulate(geometry)
+  simulation.rho=2000;
+  simulation.cp=1000;
+  simulation.eps=1;
+  simulation.TCurie=858;              
+  simulation.T_out=300;
+  simulation.T_0=2000;
+  simulation.dt=200;
+  simulation.tmax=6*3600*24;
+  simulation.tlist = [0:simulation.dt:simulation.tmax];
+  simulation.geometry = geometry;
   
   thermalModel = createpde('thermal','transient');
   thermalModel.Geometry=geometry.structure;
@@ -67,33 +67,31 @@ function Simulate(filepath, geometry)
 
   thermalModel.StefanBoltzmannConstant = 5.670373E-8;
   thermalProperties(thermalModel,'ThermalConductivity',2.857, ...
-      'MassDensity',rho, ...
-      'SpecificHeat',cp);
-  thermalIC(thermalModel,T_0);
-  thermalBC(thermalModel,"Face",7:geometry.nbr_cavities+6,"Temperature",T_out, "Vectorized","on");
-  thermalBC(thermalModel,"Face",1:6,"Emissivity",@(region,state) eps,"AmbientTemperature",T_out, "Vectorized","on");
+      'MassDensity',simulation.rho, ...
+      'SpecificHeat',simulation.cp);
+  thermalIC(thermalModel,simulation.T_0);
+  thermalBC(thermalModel,"Face",7:geometry.nbr_cavities+6,"Temperature",simulation.T_out, "Vectorized","on");
+  thermalBC(thermalModel,"Face",1:6,"Emissivity",@(region,state) simulation.eps,"AmbientTemperature",simulation.T_out, "Vectorized","on");
 
   %% Solver
-  thermalResults = solve(thermalModel,tlist);
-  Tcenter = interpolateTemperature(thermalResults,[0;0;0],1:numel(tlist));
-
+  simulation.thermalResults = solve(thermalModel,simulation.tlist);
+  simulation.Tcenter = interpolateTemperature(simulation.thermalResults,[0;0;0],1:numel(simulation.tlist));
 
   %% Time to get to Curie Temperature
-  TCurie=858;
-  [~,indice] = min(abs(Tcenter-TCurie));
-  time_to_Curie = tlist(indice)/day;
+  [~,indice] = min(abs(simulation.Tcenter-simulation.TCurie));
+  simulation.time_to_Curie = simulation.tlist(indice)/(3600*24);
+end
 
-  % Save
-  save(filepath,'geometry','Tcenter','time_to_Curie','tlist');
+function saveSimulation(filepath, simulation)
+    save(filepath,'simulation');
 end
 
 function generateSimulations(filepath, number_of_sim, mincavity, maxcavity, minradius, maxradius)
     % Generate and save random models under a "filepath" which must be configured as "Something{i}.mat" where i is the indice of the simulated object
-    % Giving an example : generateSimulations('Sim%d.mat',1,5,10,200,500)
+    % Giving an example : generatesimulations('Sim%d.mat',1,5,10,200,500)
     for i = 1:1:number_of_sim
-        [geometry] = generateGeometry(randi([mincavity, maxcavity]), minradius, maxradius);
-        Simulate(sprintf(filepath,i), geometry);
+        geometry = generateGeometry(randi([mincavity, maxcavity]), minradius, maxradius);
+        simulation = Simulate(geometry);
+        saveSimulation(sprintf(filepath,i), simulation)
     end
 end
-
-generateSimulations('Sim%d.mat',1,5,10,200,500)
