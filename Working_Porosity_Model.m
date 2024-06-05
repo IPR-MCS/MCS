@@ -15,7 +15,7 @@ function generateRandomSimulation(filepath, nbr_cavities, minradius, maxradius)
   eps=1;              
   T_out=300;
   T_0=2000;
-  dt=2000;
+  dt=200;
   day=3600*24;
   tmax=6*day;
   tlist = [0:dt:tmax];
@@ -72,7 +72,7 @@ function generateRandomSimulation(filepath, nbr_cavities, minradius, maxradius)
       'SpecificHeat',cp);
   thermalIC(thermalModel,T_0);
   thermalBC(thermalModel,"Face",7:count+6,"Temperature",T_out, "Vectorized","on");
-  thermalBC(thermalModel,"Face",1,"Emissivity",eps,"AmbientTemperature",T_out, "Vectorized","on");
+  thermalBC(thermalModel,"Face",1:6,"Emissivity",@(region,state) eps,"AmbientTemperature",T_out, "Vectorized","on");
 
 
 
@@ -99,4 +99,4 @@ function generateSimulations(filepath,number_of_sim, mincavity, maxcavity, minra
     for i = 1:1:number_of_sim
         generateRandomSimulation(sprintf(filepath,i),randi([mincavity, maxcavity]), minradius, maxradius);
     end
-end 
+end
