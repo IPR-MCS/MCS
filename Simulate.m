@@ -1,5 +1,5 @@
 function simulation = Simulate(geometry)
-  simulation.rho=2000;
+  simulation.rho=1000;
   simulation.cp=1000;
   simulation.eps=1;
   simulation.TCurie=858;              
@@ -9,13 +9,14 @@ function simulation = Simulate(geometry)
   simulation.tmax=6*3600*24;
   simulation.tlist = [0:simulation.dt:simulation.tmax];
   simulation.geometry = geometry;
+  lambda = @(location,state) (0.46+0.95*exp(-2.3e-3*state.u)); 
   
   thermalModel = createpde('thermal','transient');
   thermalModel.Geometry=geometry.structure;
   generateMesh(thermalModel,'Hmax',0.2,"GeometricOrder","quadratic");
 
   thermalModel.StefanBoltzmannConstant = 5.670373E-8;
-  thermalProperties(thermalModel,'ThermalConductivity',2.857, ...
+  thermalProperties(thermalModel,'ThermalConductivity',lambda, ...
       'MassDensity',simulation.rho, ...
       'SpecificHeat',simulation.cp);
   thermalIC(thermalModel,simulation.T_0);
