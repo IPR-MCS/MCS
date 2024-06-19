@@ -2,3 +2,4 @@
 *.mat
 simulations.ipynb
 script.m
+*.stl
