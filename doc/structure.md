@@ -8,6 +8,7 @@ Table of Contents
   - [MATLAB Structures](#matlab-structures)
       - [Input Structures](#input-structures)
         - [Geometry](#geometry)
+      - [Material](#material)
         - [Options](#options)
     - [Output Structure](#output-structure)
       - [Results](#results)
@@ -44,20 +45,28 @@ Giving an example : `geometry.exposed_faces = [1:3,5:7]`.
 
 This model allows several ways to import, modify or generate geometries. You can find them below.
 
-##### Options
+#### Material
 
-An `options` structure is composed of the following mandatory fields :`
+A `material` structure is composed of the following mandatory fields :
 
 | Fields      |        Type          | Description |
 | ----------- |     ----------       | ----------- |
-| dt          | array (double)       | Simulation time step $(s)$|
-| tmax        | array (double)       | Duration of the simulation ($s$)|
 | rho         | array (double)       | Density of the object ($kg \cdot m^3$)|
-| cp          | array (double)       | three radii of the ellipsoid or edge of the cube ($m$)
+| cp          | array (double)       | Specific heat ($J \cdot kg^{-1} \cdot K^{-1})$)
 | eps         | array (double)       | Emissivity of the object (no dimension) |
 | T_out       | array (double)       | Temperature outside the object ($K$)|
 | T_0         | array (double)       | Initial temperature of the object ($K$)|
 
+##### Options
+
+An `options` structure is composed of the following mandatory fields :`
+
+| Fields            |        Type           | Description |
+| -----------       |     ----------        | ----------- |
+| material          |  `material` | The properties of the material composing the main geometry |   
+| cavities_material |  `material` | The properties of the material composing the cavities  | 
+| dt                | array (double)        | Simulation time step $(s)$|
+| tmax              | array (double)        | Duration of the simulation ($s$)|
 ### Output Structure
 
 #### Results
