@@ -11,7 +11,6 @@ function Results = Simulate(geometry, options)
       'MassDensity',options.rho, ...
       'SpecificHeat',options.cp);
   thermalIC(thermalModel,options.T_0);
-  thermalBC(thermalModel,"Face",geometry.exposed_faces(end)+1:geometry.exposed_faces(end)+geometry.nbr_cavities,"Temperature",options.T_0, "Vectorized","on");
   thermalBC(thermalModel,"Face",geometry.exposed_faces,"Emissivity",@(region,state) options.eps,"AmbientTemperature",options.T_out, "Vectorized","on");
 
   %% Solver

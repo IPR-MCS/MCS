@@ -19,7 +19,7 @@ This model focuses on the resolution of the heat transfer equation and uses MATL
 | Page            |   Description        |
 | -----------     | -------------------- |
 | [Structure](doc/structure.md)          | [Code Hierarchy](doc/structure.md#code-hierarchy) and [MATLAB Structures](doc/structure.md#matlab-structures)|
-| [Geometries](doc/simulation.md)        | Fetching new geometries |
+| [Geometries](doc/geometries.md)        | Fetching new geometries |
 | [Exploitation](doc/exploitation.md)    | Result exploitation tools (WIP) |
 | [Bridge](doc/bridge.md)                | Python-MATLAB bridge (WIP)  
 
