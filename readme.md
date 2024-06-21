@@ -37,7 +37,7 @@ Returns `TransientThermalResults`
 
 ### Results Exploitation
 
-Several tools are available to exploit the simulation results. You can find them listed in [the related part of the documentation]().
+Several tools are available to exploit the simulation results. You can find them listed in [the related part of the documentation](doc/exploitation.mdr).
 ## Licence
 
 The project being private, no licence is currently defined.
