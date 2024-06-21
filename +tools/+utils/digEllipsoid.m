@@ -25,8 +25,7 @@ function geometry = digEllipsoid(geometry)
             
             cavity = multisphere(radius);
             cavity = translate(cavity, [x y z]);
-            geometry.structure = addVoid(geometry.structure, cavity);
-            
+            geometry.structure = addCell(geometry.structure, cavity);
             count = count+1;
             geometry.porous_volume = geometry.porous_volume + 4/3*pi*radius^3;
             geometry.porosity_fraction = (geometry.porous_volume/geometry.volume)*100;

@@ -53,20 +53,20 @@ A `material` structure is composed of the following mandatory fields :
 | ----------- |     ----------       | ----------- |
 | rho         | array (double)       | Density of the object ($kg \cdot m^3$)|
 | cp          | array (double)       | Specific heat ($J \cdot kg^{-1} \cdot K^{-1})$)
-| eps         | array (double)       | Emissivity of the object (no dimension) |
-| T_out       | array (double)       | Temperature outside the object ($K$)|
 | T_0         | array (double)       | Initial temperature of the object ($K$)|
 
 ##### Options
 
 An `options` structure is composed of the following mandatory fields :`
 
-| Fields            |        Type           | Description |
-| -----------       |     ----------        | ----------- |
-| material          |  `material` | The properties of the material composing the main geometry |   
-| cavities_material |  `material` | The properties of the material composing the cavities  | 
-| dt                | array (double)        | Simulation time step $(s)$|
-| tmax              | array (double)        | Duration of the simulation ($s$)|
+| Fields            |        Type        | Description |
+| -----------       |     ----------     | ----------- |
+| material          |  `material`        | The properties of the material composing the main geometry |   
+| cavities_material |  `material`        | The properties of the material composing the cavities  | 
+| T_out             | array (double)     | Temperature outside the object ($K$)|
+| eps               | array (double)     | Emissivity of the object (no dimension) |
+| dt                | array (double)     | Simulation time step $(s)$|
+| tmax              | array (double)     | Duration of the simulation ($s$)|
 ### Output Structure
 
 #### Results

@@ -8,11 +8,14 @@ function Results = Simulate(geometry, options)
   thermalModel.StefanBoltzmannConstant = 5.670373E-8;
 
   thermalProperties(thermalModel,'ThermalConductivity',lambda, ...
-      'MassDensity',options.rho, ...
-      'SpecificHeat',options.cp);
-  thermalIC(thermalModel,options.T_0);
+      'MassDensity',options.material.rho, ...
+      'SpecificHeat',options.material.cp);
+  thermalProperties(thermalModel,"Cell",2:geometry.nbr_cavities, 'ThermalConductivity',lambda, ...
+      'MassDensity',options.cavities_material.rho, ...
+      'SpecificHeat',options.cavities_material.cp);
+  thermalIC(thermalModel,options.material.T_0);
+  thermalIC(thermalModel,options.cavities_material.T_0);
   thermalBC(thermalModel,"Face",geometry.exposed_faces,"Emissivity",@(region,state) options.eps,"AmbientTemperature",options.T_out, "Vectorized","on");
-
   %% Solver
   Results = solve(thermalModel,tlist);
 end
