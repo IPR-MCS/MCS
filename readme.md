@@ -30,8 +30,8 @@ This model [takes a geometry](doc/geometries.md) (which can be imported, modfied
 ### `Simulate`
 | Fields      |        Type          |     Description    |
 | ----------- |     ----------       |     -----------    |
-| geometry    | pde.DiscreteGeometry | Simulated geometry |
-| options     | structure with field | Model options      |
+| geometry    | pde.DiscreteGeometry | [Simulated geometry](doc/geometries.md) |
+| options     | structure with field | [Model options](doc/structure#options)      |
 
 Returns `TransientThermalResults`
 
