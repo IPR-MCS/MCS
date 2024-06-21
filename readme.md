@@ -31,7 +31,7 @@ This model [takes a geometry](doc/geometries.md) (which can be imported, modfied
 | Fields      |        Type          |     Description    |
 | ----------- |     ----------       |     -----------    |
 | geometry    | pde.DiscreteGeometry | [Simulated geometry](doc/geometries.md) |
-| options     | structure with field | [Model options](doc/structure#options)      |
+| options     | structure with field | [Model options](doc/structure.md#options)      |
 
 Returns `TransientThermalResults`
 
