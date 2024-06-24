@@ -1,0 +1,2 @@
+# Python 3.11 is needed ! matlabengine not yet available for matlabengine
+matlabengine >= 24.1.2 

@@ -12,10 +12,12 @@ function geometry = generateGeometry(shape, unit, nbr_cavities, min_radius, max_
         geometry.volume = geometry.unit^3;
         geometry.structure = multicuboid(geometry.unit,geometry.unit,geometry.unit,'Zoffset',-geometry.unit/2);
         geometry = tools.utils.digCube(geometry);
+        geometry.exposed_faces=6;
     elseif strcmp(shape, 'ellipsoid')
         geometry.volume = 4/3*pi*unit(1)*unit(2)*unit(3);
         geometry.structure = scale(multisphere(1),[unit(1),unit(2),unit(3)]);
         geometry = tools.utils.digEllipsoid(geometry);
+        geometry.exposed_faces=1;
     else
         error("generateGeometry : Invalid shape argument")
     end

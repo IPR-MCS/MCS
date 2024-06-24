@@ -1,4 +1,4 @@
-function [Bar,Time] = getThermalBarycenter(thermalResults, Temperature)
+function Result = getThermalBarycenter(thermalResults, Temperature)
     A=thermalResults.Temperature;
     lastPointIndex=-1;
     lastTimeIndex=-1;
@@ -10,6 +10,6 @@ function [Bar,Time] = getThermalBarycenter(thermalResults, Temperature)
             break;
         end
     end
-    Bar = thermalResults.Mesh.Nodes(:,lastPointIndex);
-    Time = thermalResults.SolutionTimes(1,lastTimeIndex);
+    Result.Bar = thermalResults.Mesh.Nodes(:,lastPointIndex);
+    Result.Time = thermalResults.SolutionTimes(1,lastTimeIndex);
 end
