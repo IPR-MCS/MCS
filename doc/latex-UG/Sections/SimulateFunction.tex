@@ -1,0 +1,93 @@
+\section{Simulate} 
+
+The function first defines the time list to solve the transient problem. 
+
+\begin{lstlisting}[language=Matlab]
+tlist = 0:options.dt:options.tmax;
+\end{lstlisting}
+
+The code checks whether there's any latent heat property. If so, adds a gaussian function with $\mu = 1373$, $\sigma = 5$ to the specific heat capacity value. It then reflects the latent heat release. \\
+
+The temperature-dependent properties depending on the cavities type (\texttt{full} or \texttt{void}) are given. For the main material for example,
+
+\begin{lstlisting}[language=Matlab]
+if options.material.lambda == "dresser"
+  lambda_material = @(location, state) 0.35+0.85*exp(-1.7e-3*(state.u-273)); 
+elseif options.material.lambda == "hebei"
+  lambda_material = @(location, state) 0.59+0.23*exp(-4.3e-4*(state.u-273)); 
+elseif options.material.lambda == "tholeiitic"
+  lambda_material = @(location, state) 0.46+0.95*exp(-2.3e-3*(state.u-273)); 
+else 
+  error('Unknow material type.');
+end
+\end{lstlisting}
+
+\medskip
+Create a PDE model for transient thermal analysis.
+
+\begin{lstlisting}[language=Matlab]
+thermalModel = createpde('thermal','transient');
+\end{lstlisting}
+
+\medskip
+Import the geometry. 
+
+\begin{lstlisting}[language=Matlab]
+thermalModel.Geometry=geometry.structure;
+\end{lstlisting}
+
+\medskip
+Generate a mesh for the geometry stored in the model object. Parameter \texttt{Hmax} is the maximum mesh edge length, and geometric order must be specified as \texttt{linear} or \texttt{quadratic}.
+
+\begin{lstlisting}[language=Matlab]
+generateMesh(thermalModel,'Hmax',0.2,'GeometricOrder','quadratic');\end{lstlisting}
+
+\medskip
+Specify the thermal properties of the main material located in cell 1, and the initial temperature 
+
+\begin{lstlisting}[language=Matlab]
+thermalProperties(thermalModel,'Cell',1,'ThermalConductivity',lambda, ...
+                  'MassDensity',options.material.rho, ...
+                  'SpecificHeat',options.material.cp);
+thermalIC(thermalModel,options.material.T_0,'Cell',1);
+\end{lstlisting}
+
+\medskip
+If the cavities are not voids but heteregenous material, set the material properties and inital temperature
+
+\begin{lstlisting}[language=Matlab]
+thermalProperties(thermalModel,'Cell',2:geometry.nbr_cavities+1, ...
+                  'ThermalConductivity',lambda, ...
+                  'MassDensity',options.cavities_material.rho, ...
+                  'SpecificHeat',options.cavities_material.cp);
+thermalIC(thermalModel,options.cavities_material.T_0,'Cell',2:geometry.nbr_cavities+1);
+\end{lstlisting}
+
+\medskip
+Define the radiation boundary condition on the geometry surface of the model.
+
+\begin{lstlisting}[language=Matlab]
+thermalModel.StefanBoltzmannConstant = 5.670373E-8;
+thermalBC(thermalModel,'Face',geometry.exposed_faces, ...
+          'Emissivity',@(region,state) options.eps, ...
+          'AmbientTemperature',options.T_out, ...
+          'Vectorized','on');
+\end{lstlisting}
+
+\medskip
+Solve the model for the time steps in \texttt{tlist}.
+
+\begin{lstlisting}[language=Matlab]
+Results = solve(thermalModel,tlist);
+\end{lstlisting}
+
+\medskip
+The results are stored in a structure containing the following properties : 
+\begin{enumerate}
+    \item \textbf{Temperature}. Temperature values at nodes.
+    \item \textbf{SolutionTimes}. Same list as the tlist input to solve.
+    \item \textbf{XGradients}. $x$-component of the temperature gradient at nodes.
+    \item \textbf{YGradients}. $y$-component of the temperature gradient at nodes.
+    \item \textbf{ZGradients}. $z$-component of the temperature gradient at nodes.
+    \item \textbf{Mesh}. Finite element mesh, which is also a structure containing nodes coordinates, elements, maximum and minimum element size, and geometric order.
+\end{enumerate}

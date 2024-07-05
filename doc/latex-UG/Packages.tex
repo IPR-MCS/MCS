@@ -1,0 +1,141 @@
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}   % Margins customization
+\usepackage{graphicx}   % Include images
+\usepackage{subcaption} % Subcaptions within figure environment
+\usepackage{url}        % Presentation of URLs
+\usepackage{array}      % Extends options for arrays
+\usepackage{hyperref}   % Makes cross-references and PDF links
+\usepackage{float}
+\usepackage[table,dvipsnames,svgnames]{xcolor}     % Custom colors
+\usepackage{afterpage}  % Executes a command after the current page
+\usepackage{fix-cm}     % Allows adjustments to fonts sizes
+\usepackage{sectsty}    % Allows section headers customization
+\usepackage{titlesec}   % Advanced tools for sections customization
+\usepackage{amsmath}    % Mathematical formulas
+\usepackage{amssymb}    % Extended collection of math symbols
+\usepackage{fancyvrb}   % Verbatim for source code
+\usepackage{enumitem}   % Customization of lists
+\setlength{\parindent}{0pt}   % Sets paragraph indentation to zero
+% \usepackage[outputdir=../]{minted}  % Display code
+\usepackage{verbatim}
+\usepackage{listings}
+
+
+
+%%%%%%%%%%%%%%%%%%%% CUSTOM SECTIONS %%%%%%%%%%%%%%%%%%%%%%%%
+% Custom font :
+\newcommand{\customfont}{\fontfamily{lmss}\selectfont} 
+\titleformat{\section}{\Large\bfseries\color{Black}\customfont}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries\color{Black}\customfont}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\bfseries\color{Black}\customfont}{\thesubsubsection}{1em}{}
+\let\oldsection\section
+\renewcommand\section{\clearpage\oldsection} % new section = new page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%% TIKZ & DRAW %%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{arrows}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{calc}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{%
+            \node[shape=circle,fill=Blue!40,draw,inner sep=2pt] (char) {#1};}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%% COLORS DEF %%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{Blue}{RGB}{67, 101, 226}
+\definecolor{Black}{RGB}{0, 0, 0}
+\definecolor{DarkBlue}{RGB}{61, 88, 151}
+\definecolor{LightBlue}{RGB}{209,226,242}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%%%%% CUSTOM TABLE OF CONTENTS %%%%%%%%%%%%%%%%
+\usepackage{titlesec}
+\usepackage{titletoc}
+\titlecontents{section}
+  [0em] % Left margin
+  {\addvspace{1ex}\bfseries\color{Black}\customfont\normalsize} 
+  {\contentslabel{1.5em}} % Format for the section number
+  {} % Format for unnumbered sections
+  {\titlerule*[1pc]{.}\contentspage}
+\titlecontents{subsection}
+  [1.5em] % Left margin
+  {\addvspace{0.5ex}\color{Black}\customfont\small} % Spacing, style, color, and custom font
+  {\contentslabel{2.3em}} % Format for the subsection number
+  {} % Format for unnumbered subsections
+  {\titlerule*[1pc]{.}\contentspage} 
+\titlecontents{subsubsection}
+  [3em] % Left margin
+  {\addvspace{0.5ex}\color{Black}\customfont\small} % Spacing, style, color, and custom font
+  {\contentslabel{2.3em}} % Format for the subsection number
+  {} % Format for unnumbered subsections
+  {\titlerule*[1pc]{.}\contentspage} 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%%%%% DISPLAY SUBPLOT GRAPH %%%%%%%%%%%%%%%%%%%%
+\def\LW{\dimexpr.6\linewidth-.5em}
+\def\LWW{\dimexpr.1\linewidth-.5em}
+\def\LWtwo{\dimexpr.62\linewidth-.7em}
+\def\LWWtwo{\dimexpr.17\linewidth-.5em}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%% CUSTOM BOX %%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{tcolorbox}
+\newtcolorbox{myBox}{
+    colback = Blue!15, 
+    colframe = Blue, 
+    boxrule = 0pt, 
+    leftrule = 6pt 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%% CODE INPUT %%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{220,220,220}
+\definecolor{lightgray}{rgb}{0.93, 0.93, 0.93}
+\definecolor{black}{rgb}{0, 0, 0}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{lightgray},   
+    commentstyle=\color{magenta},
+    %keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=10pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -1,0 +1,160 @@
+\section{Python Bridge}
+
+\subsection{MATLAB Engine : {\tt matlabengine}}
+
+By calling the matlabengine package, you can directly start a \textsc{Matlab} session and call seamlessly call the model functions.
+
+For more information and advanced use, please consult the official documentation.
+
+\subsubsection{Installation}
+
+\textbf{Prerequisites}\\
+
+Python $<=$ 3.11
+
+\textsc{Matlab} Desktop with the PDE Toolbox installed
+
+\begin{lstlisting}[language=sh]
+$ pip install matlabengine
+\end{lstlisting}
+
+\subsubsection{Starting the engine}
+
+One need to start or connect to a \textsc{Matlab} session before doing anything.
+
+\begin{lstlisting}[language=Python]
+eng = matlab.engine.start_matlab()
+\end{lstlisting}
+
+The \textsc{Matlab} Engine should detect the appropriate version automatically but in some edge cases, it could not work. In this case, please consult the official documentation on the subject.
+
+\subsubsection{Calling Functions}
+
+Calling the model functions with the \textsc{Matlab} Engine is simple : it is the exact same way as you would do in \textsc{Matlab}. The only difference is that you need to add the {\tt eng} prefix when calling them. For example :
+
+\begin{lstlisting}[language=Python]
+geo = eng.tools.generateGeometry('ellipsoid',matlab.double([1.0,0.5,0.5]),3.0,0.1,0.3)
+\end{lstlisting}
+
+\medskip 
+
+\textbf{Be careful !}\\
+
+When calling a function that does not return one value, you need to add the {\tt nargout} parameter to indicate how many objects will be returned.
+
+\subsubsection{Handling data types}
+
+\textbf{Arrays and Integerss}\\
+
+\textsc{Python} and \textsc{Matlab} data types are not equivalent : therefore {\tt matlabengine} translates them.
+
+The majority of this model functions are expecting \textsc{Matlab} '{\tt double}' array type. But \textsc{Python} '{\tt int}' type is translated as a \textsc{Matlab} '{\tt int64}' type, leading to errors.
+
+Hence, you need to be sure to pass '{\tt float}' types to the MATLAB engine functions. \textsc{Python} '{\tt float}' is the only type converted as a \textsc{Matlab} '{\tt double}'\\
+
+\textbf{Structures}\\
+
+To create a \textsc{Matlab} structure ('{\tt geometry}', '{\tt options}', '{\tt material}'), you need to pass a \textsc{Python} dictionnary containing fields name ('{\tt string}') as keys and the data to transmit as values. For example:
+
+\begin{lstlisting}[language=Python]
+basalt = {'rho': 1000.0,"cp": 100.0,"T_0": 2000.0}
+\end{lstlisting}
+
+\textbf{Extract from the official documentation}\\
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|>{\customfont}c|>{\customfont}c|>{\customfont}c|}
+        \hline 
+        \rowcolor{gray!30}
+        \textbf{Python type} & \textbf{MATLAB Type} \\ \hline
+        \tt float & \tt double \\ \hline
+        \tt complex & complex \tt double \\ \hline 
+        \tt int & \tt int64 \\ \hline 
+        \tt float(nan) & \tt NaN \\ \hline 
+        \tt float(inf) & \tt inf \\ \hline
+        \tt bool  & \tt logical \\ \hline 
+        \tt str   & \tt char \\ \hline 
+        \tt dict  & \tt structure \\ \hline 
+        \tt list  & \tt cell array \\ \hline 
+        \tt set   & \tt cell array \\ \hline 
+        \tt tuple & \tt cell array \\ \hline 
+    \end{tabular}
+\end{table}
+\ 
+\subsubsection{API Documentation}
+
+From the official documentation.\\
+
+\textbf{matlab.double}\\
+
+A lot of \textsc{Matlab} built in functions need arrays to work properly. This function allows a python integer, a float or a list to be converted to a \textsc{Matlab} `double` array
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|>{\customfont}c|>{\customfont}c|>{\customfont}c|}
+        \hline 
+        \rowcolor{gray!30}
+        \textbf{Fields} & \textbf{Type} & \textbf{Description}\\ \hline
+        {\tt struct} & {\tt int}, {\tt list} or {\tt dict} & structure to convert \\ \hline
+    \end{tabular}
+\end{table}
+\
+
+\textbf{eng.workspace}\\
+
+To make \textsc{Matlab} consider variables (and save them), you need to add them to the \textsc{Matlab} Workspace. In \textsc{Python}, the \textsc{Matlab} Workspace is represented as a dictionary, you can add variables to the Workspace the same way you would add a new field to a \textsc{Python} dictionnary. For example:
+
+\begin{lstlisting}[language=Python]
+eng.workspace['results']=results
+\end{lstlisting}
+\
+
+\textbf{eng.load}\\
+
+Load \textsc{Matlab} variables from a given {\tt `filepath`}. Can only import  {\tt `.mat`} files.
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|>{\customfont}c|>{\customfont}c|>{\customfont}c|}
+        \hline 
+        \rowcolor{gray!30}
+        \textbf{Fields} & \textbf{Type} & \textbf{Description}\\ \hline
+        {\tt filepath} & {\tt string} & file to load \\ \hline
+    \end{tabular}
+\end{table}
+\
+
+\textbf{eng.save}\\
+
+Used to save \textsc{Matlab} workspace variables under a given {\tt `filepath`}. Output file can only be saved under a {\tt `.mat`} extension.
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|>{\customfont}c|>{\customfont}c|>{\customfont}c|}
+        \hline 
+        \rowcolor{gray!30}
+        \textbf{Fields} & \textbf{Type} & \textbf{Description}\\ \hline
+        {\tt filepath} & {\tt string} & file under which to save the variable \\ \hline
+        {\tt var} & {\tt string} & \textsc{Matlab} Workspace variable name \\ \hline
+    \end{tabular}
+\end{table}
+\
+
+Example :
+
+\begin{lstlisting}[language=Python]
+eng.save("test.mat", "results", nargout=0)
+\end{lstlisting}
+
+\subsection{SciPy Integration}
+
+\textbf{Load MAT Files}\\
+
+\textsc{Matlab} {\tt .mat} files can be loaded in \textsc{Python} using {\tt scipy.io.loadmat}. They are then loaded as dictionnaries containing {\tt numpy.ndarray}\\
+
+Example :
+
+\begin{lstlisting}[language=Python]
+results = scipy.io.loadmat("file.mat")
+\end{lstlisting}

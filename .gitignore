@@ -1,0 +1,17 @@
+.DS_Store
+__pycache__
+simulations
+*.mat
+*.stl
+*.avi
+*.log
+*.fls
+*.out
+*.gz
+*.toc
+*.fdb_latexmk
+*.aux
+script.m
+script.py
+simulations.ipynb
+doc/latex-UG/main.pdf

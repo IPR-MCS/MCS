@@ -1,0 +1,80 @@
+\section{Geometry}
+
+Several ways to handle geometries are implemented. One can import a pre-existing geometry from a file, generate cubic and ellipsoidal geometries from scratch, or modify existing geometries.\\
+
+
+\subsection{Import a geometry}
+
+One can import a {\tt geometry.structure} from a STL or a STEP file using the {\tt importGeometry} \textsc{Matlab} built-in function. User must however give the number of cavities and the IDs of the faces exposed to radiation.\\
+
+\textbf{Example :}\\
+
+\begin{lstlisting}[language=Matlab]
+geometry.structure = tools.importGeometry('Torus.stl');
+geometry.exposed_faces = 6;
+geometry.nbr_cavities = 5;
+\end{lstlisting}
+\ 
+
+\subsection{Generate a new geometry}
+
+One can generate new cubic or ellipsoidal geometries. The function {\tt generateGeometry} returns a {\tt geometry} structure, with the following arguments : 
+
+\renewcommand{\arraystretch}{1.5}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|>{\customfont}c|>{\customfont}c|>{\customfont}c|}
+        \hline 
+        \rowcolor{gray!30}
+        \textbf{Fields} & \textbf{Type} & \textbf{Description} \\ \hline
+        \tt shape & \tt string & {\tt 'cube'} or {\tt 'ellipsoid'} \\ \hline 
+        \tt unit & \tt array (double) & semi-axes of the ellipsoid or edge of the cube $(m)$ \\ \hline 
+        \tt nbr\_cavities	& \tt array (double) & Number of cavities that must be digged \\ \hline 
+        \tt type & \tt string & Type of cavities; must be {\tt 'full'} or {\tt 'void'} \\ \hline
+        \tt min\_radius & \tt array (double) & Minimum radius of a cavity $(m)$ \\ \hline 
+        \tt max\_radius & \tt array (double) & Maximum radius of a cavity $(m)$ \\ \hline 
+    \end{tabular}
+\end{table}
+\ 
+
+The radius of the spherical heterogenous cavities is randomized between {\tt min\_radius} and {\tt max\_radius}. Set {\tt nbr\_cavities} to {\tt 0} for homogeneous geometry.\\
+
+\textbf{Examples :}\\
+
+\begin{lstlisting}[language=Matlab]
+c_geometry = tools.generateGeometry('cube',15,100,'void',0.2,1.2); 
+e_geometry = tools.generateGeometry('ellipsoid',[1,0.5,0.5],5,'full',0.05,0.11); 
+\end{lstlisting}
+\ 
+
+
+\subsection{Modify an existing geometry}
+
+One can modify a pre-existing entirely filled geometry to insert cavities or heterogeneity using the {\tt modifyGeometry} function, that takes the following parameters : 
+
+\renewcommand{\arraystretch}{1.5}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|>{\customfont}c|>{\customfont}c|>{\customfont}c|}
+        \hline 
+        \rowcolor{gray!30}
+        \textbf{Fields} & \textbf{Type} & \textbf{Description} \\ \hline
+        \tt previous\_geometry & \tt pde.DiscreteGeometry & Geometry to modify \\ \hline
+        \tt shape & \tt string & {\tt 'cube'} or {\tt 'ellipsoid'} \\ \hline 
+        \tt unit & \tt array (double) & semi-axes of the ellipsoid or edge of the cube $(m)$ \\ \hline 
+        \tt nbr\_cavities	& \tt array (double) & Number of cavities that must be digged \\ \hline 
+        \tt type & \tt string & Type of cavities; must be {\tt 'full'} or {\tt 'void'} \\ \hline
+        \tt min\_radius & \tt array (double) & Minimum radius of a cavity $(m)$ \\ \hline 
+        \tt max\_radius & \tt array (double) & Maximum radius of a cavity $(m)$ \\ \hline 
+    \end{tabular}
+\end{table}
+\ 
+
+\textbf{Examples :}\\
+
+\begin{lstlisting}[language=Matlab]
+cube = tools.importGeometry('Cube.stl');
+c_geometry = tools.modifyGeometry(cube, 'cube', 2, 30, 'full', 0.1, 0.9);
+ellipsoid = tools.importGeometry('Ellipsoid.stl');
+e_geometry = tools.modifyGeometry(ellipsoid, 'ellipsoid',[1,0.5,0.5], 30, 'void', 0.05, 0.11);
+\end{lstlisting}

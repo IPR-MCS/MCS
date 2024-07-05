@@ -1,0 +1,16 @@
+\section{Project}
+
+\subsection{Description}
+
+This project simulates the natural cooling of magma-composed particles of different geometries. The original purpose of this code is to observe the cooling of the leftovers resulting from a potential collision between Mars and a protoplanet four billions years ago. In this context, the particles simulated are part of the accretion disk which ended up forming Phobos and Deimos (\textit{P. Rosenblatt et al., Accretion of Phobos and Deimos in an extended debris disc stirred by transient moons. Nat. Geosci. 9, 581–583 (2016))}.\\
+
+The model focuses on the resolution of the heat transfer equation with the finite element method using \textsc{Matlab}'s Partial Differential Equation Toolbox as its main support.\\
+
+A \textsc{Python} bridge permitting to use the model without leaving \textsc{Python} is made available. It relies on the \textsc{Matlab} engine API for \textsc{Python}.\\
+
+
+\subsection{Model}
+
+Once a geometry and a material are defined, the modeling of the heat transfer problem is as follows. The initial temperature is set at $T_0 = 2000$ K, with and outside temperature equals to $T_{out} = 300$ K. For the diffusion matter, we consider a temperature-dependent thermal diffusivity $\kappa = \frac{\lambda}{\rho c_p}$ where $\rho$ is the density (kg.m$^{-3}$), $c_p$ the specific heat capacity (J.kg.$^{-1}$.K$^{-1}$) and $\lambda$ the thermal conductivity (W.m$^{-1}$.K$^{-1}$). Radiation is the predominant mode of heat transfer on the particle's surface.\\
+
+Other properties can also be defined to improve the model such as latent heat $L$, or the material's heterogeneity inside the object.
