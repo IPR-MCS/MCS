@@ -6,10 +6,10 @@ function Results = Simulate(geometry, options)
     mu = options.T_latent; 
     sigma = 5;
     A = options.latent_heat/sqrt(2*pi*sigma^2);
-    specific_heat_material=@(location,state) A*exp(-((state.u-mu).^2)/sigma^2)+options.cavities_material.cp; 
+    specific_heat_material=@(location,state) A*exp(-((state.u-mu).^2)/sigma^2)+options.material.cp; 
     specific_heat_cavity=@(location,state) A*exp(-((state.u-mu).^2)/sigma^2)+options.cavities_material.cp;
   elseif options.latent_heat == 0
-    specific_heat_material=options.cavities_material.cp; 
+    specific_heat_material=options.material.cp; 
     specific_heat_cavity=options.cavities_material.cp;
   else 
     error("Latent heat; must define 'latent_heat' and 'Tlatent'.");
